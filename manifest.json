@@ -1,0 +1,9 @@
+{
+	"name": "Renaissance Scholar",
+	"version": "0.0.1",
+	"minAppVersion": "1.0.0",
+	"author": "Demetrios Paraschos",
+	"authorUrl": "https://github.com/DemetriosParaschos",
+	"description": "A Renaissance-inspired Obsidian theme with incunabula side notes and scholarly aesthetics.",
+	"theme": true
+}
