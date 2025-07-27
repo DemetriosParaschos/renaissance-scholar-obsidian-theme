@@ -1,0 +1,18 @@
+# macOS system files
+.DS_Store
+
+# Node-related (if you ever use npm for Obsidian plugins/themes)
+node_modules/
+npm-debug.log*
+
+# OS metadata
+Thumbs.db
+Desktop.ini
+
+# VS Code settings
+.vscode/
+
+# Backup files
+*~
+*.bak
+*.tmp
