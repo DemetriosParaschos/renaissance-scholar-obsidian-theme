@@ -1,7 +1,6 @@
 # Renaissance Scholar – An Obsidian Theme
 
-**NOTE: The theme is still under construction**
-
+**NOTE: The theme is still under development**
 
 **Renaissance Scholar** is a refined Obsidian theme inspired by the aesthetic of early printed books and the scholarly spirit of the Renaissance. It evokes the beauty of incunabula with side notes, elegant typography, and carefully chosen spacing to recreate a sense of learned tranquillity within your digital notes.
 
@@ -21,9 +20,9 @@ This theme is designed for scholars, students, and note-takers who wish to combi
 
 ### From the Community Themes Browser
 
-1. Open **Settings** in Obsidian
-2. Go to **Appearance → Themes → Manage**
-3. Search for **Renaissance Scholar**
+1. Open **Settings** in Obsidian  
+2. Go to **Appearance → Themes → Manage**  
+3. Search for **Renaissance Scholar**  
 4. Click **Install**, then **Use**
 
 *(Note: This option will be available once the theme is submitted to the Obsidian community repository.)*
@@ -34,8 +33,13 @@ This theme is designed for scholars, students, and note-takers who wish to combi
    ```bash
    git clone https://github.com/DemetriosParaschos/renaissance-scholar-obsidian-theme
    ```
+
 2. Copy the `manifest.json` and `theme.css` files into your Obsidian vault under `.obsidian/themes/Renaissance Scholar/`
 3. Go to **Settings → Appearance**, and activate the theme.
+
+## 👓 Theme Preview and Guide
+
+To explore the theme in context, download the file `theme-presentation.md` from this repository. After activating the theme, open this file in your vault to see a detailed visual demonstration and explanation of the theme's features and style.
 
 ## 🛠️ Customisation
 
@@ -43,11 +47,10 @@ This theme is designed to be modifiable. You are welcome to adapt the fonts, mar
 
 ## 👤 Author
 
-**Demetrios Paraschos**  
-PhD Candidate in Philosophy and Digital Humanities  
+**Demetrios Paraschos**
+PhD Candidate in Philosophy and Digital Humanities
 [GitHub](https://github.com/DemetriosParaschos)
 
 ## 📜 License
 
 This theme is released under the MIT License.
-

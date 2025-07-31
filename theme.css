@@ -1,8 +1,9 @@
 /* 
 ====== RENAISSANCE SCHOLAR THEME ==============================================
-        Last updated: 2025-07-25
+        Last updated: 2025-07-31
 ===============================================================================
    TABLE OF CONTENTS:
+
    1. THEME IMPORTS & FONTS
    2. ROOT VARIABLES
    3. BASE ELEMENTS
@@ -10,18 +11,38 @@
       4.1 Headings
       4.2 Links
       4.3 Separation line
-      4.4 Links
    5. STRUCTURAL BLOCKS
       5.1 Code & Preformatted
           5.1.1 Inline Code
           5.1.2 Fenced Code Block
             5.1.2.1 Language Labels Overrides
       5.2 Tables
+          5.2.1 Structure
+          5.2.2 Cells
+          5.2.3 Headers
+          5.2.4 Striping
+          5.2.5 In-table Links
+          5.2.6 Overrides for Editing Mode
       5.3 Blockquotes & Callouts
+          5.3.1 Blockquotes
+          5.3.2 Callouts
+              5.3.2.1 QUOTE Callout
+              5.3.2.2 QUESTION Callout
+              5.3.3.3 INFO Callout
+              5.3.3.4 WARNING Callout
+              5.3.3.5 TIP Callout
       5.4 Lists & Tasks
-      5.5 Handwriting, Marginalia, Drop Caps, Side Notes
+          5.4.1 Bullet List
+          5.4.2 Numbered List
+          5.4.3 Task List 
+      5.5 Handwriting, Marginalia, Side Notes
           5.5.1 Handwriting
-   6. METADATA/PROPERTIES
+          5.5.2 Marginalia
+          5.5.3 Side Notes
+      5.6 Drop Caps
+          5.6.1 First Paragraph Drop Cap
+          5.6.2 Paragraph Drop Cap
+   6. METADATA & PROPERTIES
    7. OBSIDIAN-SPECIFIC UI
       7.1 Modals & Scrollbars
       7.2 Workspace: Header, Ribbon, Tabs, Sidebar
@@ -52,7 +73,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manufacturing+Consent&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 
-/* TODO: Links for manually instlling or `@import` the rest fonts */
+/* TODO: Links for manually installing or `@import` the rest fonts */
 
 /* --------------------------------------
    2. ROOT VARIABLES
@@ -135,12 +156,22 @@ div.view-content {
    4. TYPOGRAPHY
 -------------------------------------- */
 /* 4.1 Headings */
-.cm-header-1, h1 {
-  display: inline-flex;
-  width: 100%;
-  font-family: var(--header-font);
-  text-transform: uppercase;
+.cm-line.HyperMD-header.HyperMD-header-1, h1,
+.cm-line.HyperMD-header.HyperMD-header-2, h2,
+.cm-line.HyperMD-header.HyperMD-header-3, h3 {
+  display: inline-flex !important;
+  justify-content: center !important;
+  width: 100%; /* prevent shrinkage */
+}
+
+.cm-header, h1, h2, h3, h4, h5, h6 {
+  font-family: var(--header-font) !important;
   color: var(--text-primary);
+
+}
+
+.cm-header-1, h1 {
+  text-transform: uppercase;
   margin-top: 2px;
   margin-bottom: 10px;
   padding-bottom: 2px; 
@@ -148,11 +179,7 @@ div.view-content {
 }
 
 .cm-header-2, h2 {
-  display: inline-flex;
-  width: 100%;
-  font-family: var(--header-font);
-  text-transform: capitalize;
-  color: var(--text-primary);
+  text-transform: capitalize !important;
   margin-top: 2px;
   margin-bottom: 10px;
   padding-bottom: 2px; 
@@ -160,28 +187,54 @@ div.view-content {
 }
 
 .cm-header-3, h3 {
-  display: inline-flex;
-  width: 100%;
-  font-family: var(--header-font);
   text-transform: capitalize;
-  color: var(--text-primary);
-  border-bottom: 2px solid var(--text-primary);
   margin-top: 20px;
   margin-bottom: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 0px;
   justify-content: center;
+  position: relative; /* <-- Add this */
+
+}
+/* Draw full-width line */
+.cm-line.HyperMD-header.HyperMD-header-3::after, h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 2px solid var(--text-primary);
 }
 
 .cm-header-4, h4,
 .cm-header-5, h5, 
 .cm-header-6, h6 {
-  font-family: var(--header-font) !important;
   text-transform: capitalize;
-  color: var(--text-primary);
   margin-top: 20px;
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
+
+/* Fix the collapsing symbol */
+.markdown-preview-view .collapse-indicator {
+  position: relative !important;
+  display: inline-flex !important;
+  margin-left: 0 !important;
+}
+
+.collapse-indicator.is-collapsed .svg-icon {
+  stroke: var(--accent-color); /* reddish accent for collapsed state */
+}
+
+/* 4.2 Links */
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+a.internal-link {
+  color: var(--accent-color) !important;
+}
+
 
 /* 4.3 Separation line (`___`)*/
 .hr.cm-line hr,
@@ -192,25 +245,11 @@ div.view-content {
   margin: 1em 0 !important;
 }
 
-/* 4.4 Links */
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* 4.3 HR */
-
-
 /* --------------------------------------
    5. STRUCTURAL BLOCKS
 -------------------------------------- */
 /* 5.1 Code & Preformatted */
-
-/* 5.1.1 INLINE CODE */
+/* 5.1.1 Inline Code */
 code,
 .markdown-source-view.mod-cm6 .cm-inline-code,
 .markdown-preview-view code {
@@ -222,7 +261,7 @@ code,
   color: var(--text-secondary);
 }
 
-/* 5.1.2 FENCED CODE BLOCKS */
+/* 5.1.2 Fenced Code Blocks */
 pre,
 .markdown-preview-view pre{
   font-family: var(--monospaced-font);
@@ -240,7 +279,7 @@ pre,
 /* Code block background */
 .HyperMD-codeblock.cm-line {
   padding-left: 4em !important;
-  background-color: rgba(255, 236, 217, 0.6) !important;
+  background-color: var(--table-background-primary) !important;
   }
 
 /* Code block numbering */
@@ -277,9 +316,20 @@ pre,
   border-left: 1px dashed var(--accent-color);
 }
 
-/* 5.1.2.1 LANGUAGE LABELS (TOP-RIGHT) */
-/* Show label in Reading Mode */
-pre[class*="language-"]::after {
+/* 5.1.2.1 Language Labels Overrides */
+.code-block-flair {
+  font-size: 0.5em;
+  font-family: var(--header-font) !important;
+  color: var(--text-primary);
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  text-transform: capitalize;
+  opacity: 0.8;
+}
+
+pre[class*="language-"]::after,
+.code-block-flair::after {
   font-size: 0.5em;
   font-family: var(--header-font);
   color: var(--text-primary);
@@ -333,7 +383,7 @@ pre.language-haskell::after { content: "Haskell"; }
 pre.language-powershell::after { content: "PowerShell"; }
 
 /* 5.2 Tables */
-/* STRUCTURE: Table layout and general appearance */
+/* 5.2.1 Structure: Table layout and general appearance */
 table {
   width: 90%;
   margin: 0 auto;
@@ -350,7 +400,7 @@ table {
   overflow: hidden;
 }
 
-/* CELLS: Base styling for headers and data cells */
+/* 5.2.2 Cells: Base styling for headers and data cells */
 table th,
 table td {
   font-size: 1.5625rem; /* 25px to match the table */
@@ -360,7 +410,7 @@ table td {
   vertical-align: top;
 }
 
-/* HEADERS: Special styling for first row of the table */
+/* 5.2.3 Headers: Special styling for first row of the table */
 table tr:first-child {
   background-color: var(--table-background-primary);
 }
@@ -373,12 +423,12 @@ table tr:first-child th {
   text-align: center; /* Centered column titles */
 }
 
-/* STRIPING: Zebra-style alternate row highlighting */
+/* 5.2.4 Striping: Zebra-style alternate row highlighting */
 table tr:nth-child(even) {
   background-color: var(--table-background-secondary);
 }
 
-/* LINKS: Styling for links inside table cells */
+/* 5.2.5 In-table Links: Styling for links inside table cells */
 table a {
   color: var(--accent-color);
   text-decoration: none;
@@ -393,14 +443,14 @@ table a > .external-link {
   vertical-align: middle;
 }
 
-/* EDITING MODE: Fix content flow in live editing view */
+/* 5.2.6 Overrides for Editing Mode */
 .markdown-source-view table th,
 .markdown-source-view table td {
   vertical-align: top;
   word-break: break-word;
 }
 
-/* EMPTY CELL SUPPORT: Preserve layout in reading mode */
+/* Preserve layout in reading mode */
 table td:empty::before {
   content: "Â ";            /* Non-breaking space */
   visibility: hidden;
@@ -409,17 +459,254 @@ table td:empty::before {
   min-height: 1.5em;
 }
 
-.cm-content.cm-lineWrapping
-{
+.cm-content.cm-lineWrapping {
   font-size: 0.8em !important;
-
 }
 
 /* 5.3 Blockquotes & Callouts */
+/* 5.3.1 Blockquotes */
+blockquote::before,
+.HyperMD-quote.HyperMD-quote-1.cm-line::before {
+  content: none !important; /* Ensures it won’t render at all */
+  display: none !important; /* Hides the element */
+}
+
+blockquote,
+.HyperMD-quote.HyperMD-quote-1.cm-line {
+  background-color: var(--background-secondary); 
+  border-left: 4px solid var(--accent-color) !important;
+  color: var(--text-primary);
+  padding: 20px;
+  font-size: 1em;
+  line-height: 1.5;
+  box-shadow: var(--shadow-color);
+  border-radius: 30px; 
+  text-indent: 0 !important; /* neutralise markdown's default offset */
+}
+
+blockquote {
+  font-size: 0.8em;
+}
+
+.HyperMD-quote.HyperMD-quote-1.cm-line::first-letter {
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-left: -1.3em;
+}
+
+/* 5.3.2 Callouts */
+/* Generic callout title */
+.callout-title {
+  font-family: var(--box-header-font);
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+/* Generic callout container styling */
+.callout {
+  border-radius: 4px;
+  background-color: var(--background-secondary);
+  margin: 1em 0;
+  padding: 1em;
+  box-shadow: var(--shadow-color);
+  font-family: var(--body-font);
+}
+
+/* Apply the code modification within callouts */
+.callout code,
+.callout .code,
+.callout .cm-inline-code {
+  font-family: var(--monospaced-font);
+  background-color: var(--table-background-primary);
+  border: 1px dashed var(--accent-color);
+  font-size: 0.9em;
+  padding: 0 0.25em;
+  color: var(--text-secondary);
+}
+
+/* 5.3.2.1 QUOTE Callout (`[!quote]`) */
+.callout[data-callout="quote"] {
+  border: 1px solid #5c4033;
+  border-left: 4px solid #5c4033;
+  background-color: rgba(92, 64, 51, 0.1); /* #5c4033 in rgba */
+
+}
+.callout[data-callout="quote"] .callout-title {
+  color: #5c4033;
+  font-style: italic;
+}
+
+/* 5.3.2.2. QUESTION Callout (`[!question]`) */
+.callout[data-callout="question"] {
+  border: 1px solid #3e6b89;
+  border-left: 4px solid #3e6b89;
+  background-color: rgba(62, 107, 137, 0.1); /* #3e6b89 in rgba */
+
+}
+.callout[data-callout="question"] .callout-title {
+  color: #3e6b89;
+}
+
+/* 5.3.3.3. INFO Callout (`[!info]`) */
+.callout[data-callout="info"] {
+  border: 1px solid #3b734b;
+  border-left: 4px solid #3b734b;
+  background-color: rgba(59, 115, 75, 0.1); /* #3b734b in rgba */
+}
+.callout[data-callout="info"] .callout-title {
+  color: #3b734b;
+}
+
+/* 5.3.3.4. WARNING Callout (`[!warning]`) */
+.callout[data-callout="warning"] {
+  border: 1px solid #b33a3a;
+  border-left: 4px solid #b33a3a;
+  background-color: rgba(255, 200, 200, 0.1); 
+}
+.callout[data-callout="warning"] .callout-title {
+  color: #b33a3a;
+}
+
+/* 5.3.3.5. TIP Callout (`[!tip]`) */
+.callout[data-callout="tip"] {
+  border: 1px solid #b5651d;
+  border-left: 4px solid #b5651d;
+  background-color: rgba(181, 101, 29, 0.1); /* #b5651d in rgba */
+}
+.callout[data-callout="tip"] .callout-title {
+  color: #b5651d;
+}
+
+/* 5.4 Lists & Tasks */
+/* 5.4.1 Bullet List */
+/* REMOVE ALL BULLET MARKERS */
+li ::after,
+.HyperMD-list-line-1 .list-bullet::after,
+.HyperMD-list-line-2 .list-bullet::after,
+.HyperMD-list-line-3 .list-bullet::after,
+.HyperMD-list-line-4 .list-bullet::after {
+  display: none;
+}
+
+/* ADD ❧ FOR LEVEL 1 */
+.HyperMD-list-line-1 .list-bullet::before,
+.HyperMD-list-line-2 .list-bullet::before,
+.HyperMD-list-line-3 .list-bullet::before,
+.HyperMD-list-line-4 .list-bullet::before,
+.markdown-preview-view ul > li:not(.task-list-item)::before {
+  content: "❧";
+  position: absolute;
+  left: 0;
+  font-family: var(--header-font);
+  font-size: 1em;
+  color: var(--accent-color);
+  top: 0.1em;
+  
+}
+
+/* Padding */
+.cm-list-1,
+.cm-list-2,
+.cm-list-3,
+.cm-list-4,
+ul > li:not(.task-list-item) {
+  padding-left: 1.6em;
+}
+
+.cm-formatting.cm-formatting-list.cm-formatting-list-ol.cm-list-1,
+.cm-list {
+  font-family: var(--header-font); /* Or --body-font */
+  color: var(--text-secondary);
+  font-weight: bold;
+  font-size: 1.1em;
+  padding-right: 0.3em;
+}
+
+/* 5.4.2 Numbered List */
+
+/* ---------- Preview / Reading Mode ---------- */
+.markdown-preview-view ol{
+  list-style-type: upper-roman;
+  margin-left: 1em;
+}
+
+.markdown-preview-view ol > li::marker {
+  font-family: var(--header-font);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+/* ---------- Edit Mode (CodeMirror) ---------- */
+
+/* Style the full formatting span */
+.cm-formatting.cm-formatting-list.cm-formatting-list-ol.cm-list-1 {
+  list-style-type: upper-roman; /* TODO: Review */
+  margin-left: 1em;
+}
+
+/* Specifically target the inner list number (e.g. '5.') */
+.list-number {
+  font-family: var(--header-font);
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+}
+
+/* Style the actual list item content */
+.cm-list-1 {
+  font-family: var(--body-font);
+  color: var(--text-primary);
+}
+
+/* 5.4.3 Task List */
+ul > li.task-list-item,
+.markdown-preview-view ul > li.task-list-item {
+  list-style: none;
+  position: relative;
+  padding-left: 2em;
+}
+
+
+ul > li.task-list-item input[type="checkbox"],
+.markdown-preview-view input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--accent-color);
+  background-color: transparent;
+  border-radius: 4px;
+  width: 1.2em;
+  height: 1.2em;
+  position: absolute;
+  left: 0;
+  top: 1em;
+  cursor: pointer;
+  margin: 0;
+}
+
+ul > li.task-list-item input[type="checkbox"]:checked,
+.markdown-preview-view input[type="checkbox"]:checked {
+  background-color: green !important;
+}
+
+ul > li.task-list-item input[type="checkbox"]:checked::after,
+.markdown-preview-view input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  left: -0.55em;
+  top: -0.55em;
+  font-size: 0.9em;
+  color: white;
+  font-family: var(--header-font);
+}
 
 /* 5.5 Handwriting, Marginalia, Drop Caps, Side Notes, Separator */
 
-/* 5.5.1 HANDWRITTEN HIGHLIGHTS */
+/* 5.5.1 Handwriting */
 /* Use <span class="handwriting">...</span> to apply a script style */
 /* For people not confident with HTML, there is the option to use the Markdown Attributes plugin by adding .{handwriting} in the end of the paragraph.*/
 p.handwriting,
@@ -431,10 +718,144 @@ p.handwriting,
   text-align: left;
 }
 
-/* 5.5.2 */
+/* 5.5.2 Marginalia  TODO: Review: does not work */
+/* For medieval margin notes, use:
+         <span class="right-marginalium">Note here</span>
+    for people not confident with HTML, there is the option
+    to use the Markdown Attributes plugin */
+p.right-marginalium,
+.right-marginalium {
+  float: right;
+  clear: right;
+  width: 20%;
+  margin-right: -20%;
+  margin-left: 0.3em;
+  padding-left: 0.3em;
+  font-size: 0.7em;
+  line-height: 1.3;
+  position: relative;
+  page-break-inside: avoid;
+  text-align: left;
+  background: none;
+  font-family: var(--handwriting-font);
+}
+/* 5.5.3 Side Notes */
+
+/* Sidenote styling for reading mode inline code */
+.markdown-preview-view mark {
+  float: right;
+  clear: right;
+  width: 20%;
+  margin-right: -20%;
+  margin-left: 0.3em;
+  padding-left: 0.3em;
+  font-size: 0.7em;
+  line-height: 1.3;
+  position: relative;
+  page-break-inside: avoid;
+  
+  /* Override default inline code styles */
+  background: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+/* Sidenote styling for writing (editor) mode inline code */
+.markdown-source-view.mod-cm6 mark, 
+.cm-s-obsidian span.cm-highlight {
+  float: right;
+  clear: right;
+  width: 20%;
+  margin-right: -20%;
+  margin-left: 0.3em;
+  padding-left: 0.3em;
+  border-left: none; /* Overrides the border */
+  font-size: 0.7em;
+  line-height: 1.3;
+  position: relative;
+  
+  background: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+/* 5.6 Drop Caps */
+/* 5.6.1 First Paragraph Drop Cap */
+.dropcaps .cm-content .cm-line:nth-child(2):first-letter,
+.dropcaps .markdown-preview-sizer > div:nth-child(4) p:first-letter {
+  float: left;
+  line-height: 1;
+  margin-inline-end: 0.1em;
+  margin-bottom: -1rem;
+  padding: 0 0.05em;
+  border-radius: 4px;
+  font-family: "Manufacturing Consent", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 7em;
+  text-transform: capitalize;
+  color: var(--accent-color);
+}
+
+/* 5.6.2 Paragraph Drop Cap */
+/* These modifications demand the Markdown Attributes plugin 
+    and they are visible only on the Preview Mode.
+    They also demand installing the necessary fonts,
+    which are free for personal use only */
+p.drop-cap-Lat1:first-letter {
+  float: left;
+  color: var(--accent-color);
+  font-size: 7em;
+  font-family: "Manufacturing Consent";
+  font-style: normal;
+  line-height: 0.88; /* Adjusts height to align better */
+  margin-right: 0.1em; /* Reduce space on the right */
+  margin-bottom: -0.05em; /* Pulls it slightly down */
+  display: flex; /* Helps with vertical alignment */
+  align-items: center; /* Centers within the border */
+}
+
+p.drop-cap-Lat2:first-letter {
+  float: left;
+  color: var(--accent-color);
+  font-size: 10em;
+  font-family: "Goudy Initialen";
+  font-style: normal;
+  line-height: 0.88; /* Adjusts height to align better */
+  margin-right: 0.1em; /* Reduce space on the right */
+  margin-bottom: -0.05em; /* Pulls it slightly down */
+  display: flex; /* Helps with vertical alignment */
+  align-items: center; /* Centers within the border */
+}
+
+p.drop-cap-Lat3:first-letter {
+  float: left;
+  color: var(--accent-color);
+  font-size: 10em;
+  font-family: "CamelotCaps";
+  font-style: normal;
+  line-height: 1.1; /* Adjusts height to align better */
+  margin-right: 0.1em; /* Reduce space on the right */
+  margin-bottom: -0.2em; /* Pulls it slightly down */
+  display: flex; /* Helps with vertical alignment */
+  align-items: center; /* Centers within the border */
+}
+
+p.drop-cap-Lat4:first-letter {
+  float: left;
+  color: var(--accent-color);
+  font-size: 9em;
+  font-family: "Cherubic Initials";
+  font-style: normal;
+  line-height: 1.1; /* Adjusts height to align better */
+  margin-right: 0.1em; /* Reduce space on the right */
+  margin-bottom: -0.2em; /* Pulls it slightly down */
+  display: flex; /* Helps with vertical alignment */
+  align-items: center; /* Centers within the border */
+}
 
 /* --------------------------------------
-   6. METADATA/PROPERTIES
+   6. METADATA & PROPERTIES
 -------------------------------------- */
 .metadata-container::before {
   content: "";
@@ -490,7 +911,6 @@ input.metadata-input-text.mod-text {
   /* Any other customisation */
 }
 
-
 .multi-select-input::before {
   content: attr(data-placeholder);
   font-family: 'IM FELL English SC', serif;
@@ -532,38 +952,11 @@ input.metadata-input-text.mod-text {
   text-decoration: none;
   text-transform: capitalize;
 }
+
 /* --------------------------------------
    7. OBSIDIAN-SPECIFIC UI
 -------------------------------------- */
-/* 7.1 Modals & Scrollbars */
-
-/* 7.2 Workspace: Header, Ribbon, Tabs, Sidebar */
-
-
-/* 7.3 Graph View, Canvas View */
-
-
-/* --------------------------------------
-   8. UTILITIES & OVERRIDES
--------------------------------------- */
-/* Any last overrides or utility classes */
-
-  
-/* --------------------------------------
-  5. LINKS
--------------------------------------- */
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-  
-/* --------------------------------------
-  8. SCROLLBARS
--------------------------------------- */
+/* 7.1 Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -578,274 +971,11 @@ a:hover {
   /*#F0BFB5 !important;*/
 }
 
-/* --------------------------------------
-  9. MODALS
--------------------------------------- */
-.modal {
-  background-color: var(--background-primary);
-  border: 1px solid var(--accent-color);
-  box-shadow: var(--shadow-color);
-}
+/* 7.2 Workspace: Header, Ribbon, Tabs, Sidebar */
 
-
-
-/* --------------------------------------
-  12. BLOCK QUOTES
--------------------------------------- */
-blockquote {
-  background-color: var(--background-secondary); 
-  border-left: 4px solid var(--accent-color);
-  padding: 10px 20px;
-  margin: 1em 20px;
-  font-style: italic;
-  color: var(--text-secondary);
-
-  /* Optional subtle box shadow */
-  box-shadow: var(--shadow-color);
-
-  /* Rounded corners for a softer look */
-  border-radius: 5px;
-
-  /* Position relative for pseudo-elements (like quotes icons) */
-  position: relative;
-}
-
-/* Optionally remove default paragraph margins inside blockquotes */
-blockquote p {
-  margin: 0.5em 0;
-}
-
-/* Generic callout container styling */
-.callout {
-  border-radius: 4px;
-  background-color: var(--background-secondary);
-  margin: 1em 0;
-  padding: 1em;
-  box-shadow: var(--shadow-color);
-  font-family: var(--body-font);
-}
-
-/* Title within callout */
-.callout-title {
-  font-family: var(--box-header-font);
-  font-weight: bold;
-  margin-bottom: 0.5em;
-}
-
-/* 1. QUOTE Callout (e.g. [!quote]) */
-.callout[data-callout="quote"] {
-  border: 1px solid #5c4033;
-  border-left: 4px solid #5c4033;
-  background-color: rgba(92, 64, 51, 0.1); /* #5c4033 in rgba */
-
-}
-.callout[data-callout="quote"] .callout-title {
-  color: #5c4033;
-  font-style: italic;
-}
-
-/* 2. QUESTION Callout (e.g. [!question]) */
-.callout[data-callout="question"] {
-  border: 1px solid #3e6b89;
-  border-left: 4px solid #3e6b89;
-  background-color: rgba(62, 107, 137, 0.1); /* #3e6b89 in rgba */
-
-}
-.callout[data-callout="question"] .callout-title {
-  color: #3e6b89;
-}
-
-/* 3. INFO Callout (e.g. [!info]) */
-.callout[data-callout="info"] {
-  border: 1px solid #3b734b;
-  border-left: 4px solid #3b734b;
-  background-color: rgba(59, 115, 75, 0.1); /* #3b734b in rgba */
-}
-.callout[data-callout="info"] .callout-title {
-  color: #3b734b;
-}
-
-/* 4. WARNING Callout (e.g. [!warning]) */
-.callout[data-callout="warning"] {
-  border: 1px solid #b33a3a;
-  border-left: 4px solid #b33a3a;
-  background-color: rgba(255, 200, 200, 0.1); 
-}
-.callout[data-callout="warning"] .callout-title {
-  color: #b33a3a;
-}
-
-/* 5. TIP Callout (e.g. [!tip]) */
-.callout[data-callout="tip"] {
-  border: 1px solid #b5651d;
-  border-left: 4px solid #b5651d;
-  background-color: rgba(181, 101, 29, 0.1); /* #b5651d in rgba */
-}
-.callout[data-callout="tip"] .callout-title {
-  color: #b5651d;
-}
-
-  
-
-  
-/* --------------------------------------
-   14. OPTIONAL: MARGINALIA EFFECT   TODO: Review: does not work
--------------------------------------- */
-/* For medieval margin notes, use <span class="right-marginalium">Note here</span> */
-/* for people not confident with HTML, there is the option to use the Markdown Attributes plugin */
-p.right-marginalium,
-.right-marginalium {
-  float: right;
-  clear: right;
-  width: 20%;
-  margin-right: -20%;
-  margin-left: 0.3em;
-  padding-left: 0.3em;
-  font-size: 0.7em;
-  line-height: 1.3;
-  position: relative;
-  page-break-inside: avoid;
-  text-align: left;
-  background: none;
-  font-family: var(--handwriting-font);
-}
-  
-/* --------------------------------------
-   15. OPTIONAL: DECORATIVE SEPARATOR
--------------------------------------- */
-.glyph-separator {
-  display: block;
-  text-align: center;
-  color: var(--accent-color);
-  font-size: 4em;
-  margin: 0.1em
-}
-
-/* --------------------------------------
- 16. Drop Cap: First letter of the first paragraph 
-    + First letter of each paragraph but visible in preview mode only
--------------------------------------- */
-.dropcaps .cm-content .cm-line:nth-child(2):first-letter,
-.dropcaps .markdown-preview-sizer > div:nth-child(4) p:first-letter {
-  float: left;
-  line-height: 1;
-  margin-inline-end: 0.1em;
-  margin-bottom: -1rem;
-  padding: 0 0.05em;
-  border-radius: 4px;
-  font-family: "Manufacturing Consent", system-ui;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 7em;
-  text-transform: capitalize;
-  color: var(--accent-color);
-}
-
-p.drop-cap-Lat1:first-letter {
-  float: left;
-  color: var(--accent-color);
-  font-size: 7em;
-  font-family: "Manufacturing Consent";
-  font-style: normal;
-  line-height: 0.88; /* Adjusts height to align better */
-  margin-right: 0.1em; /* Reduce space on the right */
-  margin-bottom: -0.05em; /* Pulls it slightly down */
-  display: flex; /* Helps with vertical alignment */
-  align-items: center; /* Centers within the border */
-}
-
-/* These modifications demand the Markdown Attributes plugin */
-/* These fonts are free for personal use only */
-p.drop-cap-Lat2:first-letter {
-  float: left;
-  color: var(--accent-color);
-  font-size: 10em;
-  font-family: "Goudy Initialen";
-  font-style: normal;
-  line-height: 0.88; /* Adjusts height to align better */
-  margin-right: 0.1em; /* Reduce space on the right */
-  margin-bottom: -0.05em; /* Pulls it slightly down */
-  display: flex; /* Helps with vertical alignment */
-  align-items: center; /* Centers within the border */
-}
-
-p.drop-cap-Lat3:first-letter {
-  float: left;
-  color: var(--accent-color);
-  font-size: 10em;
-  font-family: "CamelotCaps";
-  font-style: normal;
-  line-height: 1.1; /* Adjusts height to align better */
-  margin-right: 0.1em; /* Reduce space on the right */
-  margin-bottom: -0.2em; /* Pulls it slightly down */
-  display: flex; /* Helps with vertical alignment */
-  align-items: center; /* Centers within the border */
-}
-
-p.drop-cap-Lat4:first-letter {
-  float: left;
-  color: var(--accent-color);
-  font-size: 9em;
-  font-family: "Cherubic Initials";
-  font-style: normal;
-  line-height: 1.1; /* Adjusts height to align better */
-  margin-right: 0.1em; /* Reduce space on the right */
-  margin-bottom: -0.2em; /* Pulls it slightly down */
-  display: flex; /* Helps with vertical alignment */
-  align-items: center; /* Centers within the border */
-}
-
-/* --------------------------------------
-  17. Side Notes (instead of highlighting)
--------------------------------------- */
-
-/* Sidenote styling for reading mode inline code */
-.markdown-preview-view mark {
-  float: right;
-  clear: right;
-  width: 20%;
-  margin-right: -20%;
-  margin-left: 0.3em;
-  padding-left: 0.3em;
-  font-size: 0.7em;
-  line-height: 1.3;
-  position: relative;
-  page-break-inside: avoid;
-  
-  /* Override default inline code styles */
-  background: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-/* Sidenote styling for writing (editor) mode inline code */
-.markdown-source-view.mod-cm6 mark, 
-.cm-s-obsidian span.cm-highlight {
-  float: right;
-  clear: right;
-  width: 20%;
-  margin-right: -20%;
-  margin-left: 0.3em;
-  padding-left: 0.3em;
-  border-left: none; /* Overrides the border */
-  font-size: 0.7em;
-  line-height: 1.3;
-  position: relative;
-  
-  background: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-/* --------------------------------------
-  18. Metadata Container: Properties container with background image
--------------------------------------- */
-
-/* --------------------------------------
-  GRAPH VIEW – RENAISSANCE SCHOLAR STYLE
-  (Using Supported WebGL Bridge Classes)
--------------------------------------- */
-
+/* 7.3 Graph View, Canvas View */
+/* 7.3.1 Graph View */
+/* (Using Supported WebGL Bridge Classes) */
 /* Node base fill (used for file/regular nodes) */
 .graph-view.color-fill {
   color: var(--text-primary);
@@ -897,10 +1027,7 @@ p.drop-cap-Lat4:first-letter {
   color: var(--accent-color);
 }
 
-/* --------------------------------------
-  CANVAS VIEW
--------------------------------------- */
-
+/* 7.3.1 Canvas View */
 .canvas-node-container {
   color: var(--text-primary);
   border: 2px solid var(--accent-color);
@@ -925,6 +1052,38 @@ p.drop-cap-Lat4:first-letter {
     background-size: var(--image-scale);
 }
 
+/* 7.4 Modals */
+/* TODO: DO I NEED THIS?
+.modal {
+  background-color: var(--background-primary);
+  border: 1px solid var(--accent-color);
+  box-shadow: var(--shadow-color);
+}
+*/
+
+/* --------------------------------------
+   8. UTILITIES & OVERRIDES
+-------------------------------------- */
+/* Any last overrides or utility classes */
+
+  
+
+/* END OF THE THEME */
+/* τέλος καὶ τῷ Θεῷ δόξαν */
+/* ========================================================================== */
+
+  
+/* --------------------------------------
+   15. OPTIONAL: DECORATIVE SEPARATOR
+-------------------------------------- */
+.glyph-separator {
+  display: block;
+  text-align: center;
+  color: var(--accent-color);
+  font-size: 4em;
+  margin: 0.1em
+}
+
 /* ================================= */
 
 .view-header-title {
@@ -947,142 +1106,6 @@ p.drop-cap-Lat4:first-letter {
   background: none !important;
   box-shadow: none !important;
 }
-
-/* ========================================================
-   BULLET LISTS: Replace default bullets with ❧
-======================================================== */
-/* REMOVE ALL BULLET MARKERS */
-li ::after,
-.HyperMD-list-line-1 .list-bullet::after,
-.HyperMD-list-line-2 .list-bullet::after,
-.HyperMD-list-line-3 .list-bullet::after,
-.HyperMD-list-line-4 .list-bullet::after {
-  display: none;
-}
-
-/* ADD ❧ FOR LEVEL 1 */
-.HyperMD-list-line-1 .list-bullet::before,
-.HyperMD-list-line-2 .list-bullet::before,
-.HyperMD-list-line-3 .list-bullet::before,
-.HyperMD-list-line-4 .list-bullet::before,
-.markdown-preview-view ul > li:not(.task-list-item)::before {
-  content: "❧";
-  position: absolute;
-  left: 0;
-  font-family: var(--header-font);
-  font-size: 1em;
-  color: var(--accent-color);
-  top: 0.1em;
-  
-}
-
-/* Padding */
-.cm-list-1,
-.cm-list-2,
-.cm-list-3,
-.cm-list-4,
-ul > li:not(.task-list-item) {
-  padding-left: 1.6em;
-}
-
-.cm-formatting.cm-formatting-list.cm-formatting-list-ol.cm-list-1,
-.cm-list {
-  font-family: var(--header-font); /* Or --body-font */
-  color: var(--text-secondary);
-  font-weight: bold;
-  font-size: 1.1em;
-  padding-right: 0.3em;
-}
-
-
-/* ========================================================
-   NUMBERED LISTS: Use upper-roman style
-======================================================== */
-
-/* ---------- Preview / Reading Mode ---------- */
-.markdown-preview-view ol{
-  list-style-type: upper-roman;
-  margin-left: 1em;
-}
-
-.markdown-preview-view ol > li::marker {
-  font-family: var(--header-font);
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-
-/* ---------- Edit Mode (CodeMirror) ---------- */
-
-/* Style the full formatting span */
-.cm-formatting.cm-formatting-list.cm-formatting-list-ol.cm-list-1 {
-  list-style-type: upper-roman; /* TODO: Review */
-  margin-left: 1em;
-}
-
-/* Specifically target the inner list number (e.g. '5.') */
-.list-number {
-  font-family: var(--header-font);
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-
-}
-
-/* Style the actual list item content */
-.cm-list-1 {
-  font-family: var(--body-font);
-  color: var(--text-primary);
-}
-
-
-
-/* ========================================================
-   TASK LISTS: Checkbox styling
-======================================================== */
-ul > li.task-list-item,
-.markdown-preview-view ul > li.task-list-item {
-  list-style: none;
-  position: relative;
-  padding-left: 2em;
-}
-
-
-ul > li.task-list-item input[type="checkbox"],
-.markdown-preview-view input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 2px solid var(--accent-color);
-  background-color: transparent;
-  border-radius: 4px;
-  width: 1.2em;
-  height: 1.2em;
-  position: absolute;
-  left: 0;
-  top: 1em;
-  cursor: pointer;
-  margin: 0;
-}
-
-ul > li.task-list-item input[type="checkbox"]:checked,
-.markdown-preview-view input[type="checkbox"]:checked {
-  background-color: green !important;
-}
-
-ul > li.task-list-item input[type="checkbox"]:checked::after,
-.markdown-preview-view input[type="checkbox"]:checked::after {
-  content: "✓";
-  position: absolute;
-  left: -0.55em;
-  top: -0.55em;
-  font-size: 0.9em;
-  color: white;
-  font-family: var(--header-font);
-}
-
 
 
 /* ======================================================== 
@@ -1261,27 +1284,7 @@ div.modal-title{
   font-size: 1.3em;
 }
 
-/* =========== Fraktur Font =========== */
-p.fraktur,
-p.Fraktur,
-p.Manufacturing-Consent {
-  font-size: 1.4em;
-  font-family: "Manufacturing Consent";
-  line-height: 1.3; /* Adjusts height to align better */
-  text-align: center; /* Centers within the border */
-}
 
-/* =========== Garamond Font =========== */
-/* We need a classical font for Greek too */
-p.garamond,
-p.EB-Garamond,
-p.Garamind {
-  font-size: 1em;
-  font-family: "EB Garamond", serif;
-  font-style: normal;
-  line-height: 1.5; /* Adjusts height to align better */
-  text-align: full; /* Centers within the border */
-}
 
 /* =========== select drop-box, slider, checkbox =========== */
 select.dropdown {
@@ -1306,4 +1309,39 @@ input.slider::-webkit-slider-thumb {
 
 button.mod-cta {
   background: var(--accent-color) !important;
+}
+
+
+
+
+
+/* Footnote */
+.cm-s-obsidian span.cm-footref.cm-hmd-barelink,
+.cm-s-obsidian span.cm-footref.cm-hmd-barelink.cm-formatting, 
+.cm-s-obsidian span.m-formatting-link-string {
+  color: var(--accent-color);
+}
+
+
+
+/* =========== Fraktur Font =========== */
+p.fraktur,
+p.Fraktur,
+p.Manufacturing-Consent {
+  font-size: 1.4em;
+  font-family: "Manufacturing Consent";
+  line-height: 1.3; /* Adjusts height to align better */
+  text-align: center; /* Centers within the border */
+}
+
+/* =========== Garamond Font =========== */
+/* We need a classical font for Greek too */
+p.garamond,
+p.EB-Garamond,
+p.Garamind {
+  font-size: 1em;
+  font-family: "EB Garamond", serif;
+  font-style: normal;
+  line-height: 1.5; /* Adjusts height to align better */
+  text-align: full; /* Centers within the border */
 }
